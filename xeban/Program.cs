@@ -11,8 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add DI
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<AccountService>();
-builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddSingleton<AccountRepository>();
 
 var app = builder.Build();
 

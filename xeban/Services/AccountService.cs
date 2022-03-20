@@ -1,5 +1,6 @@
 ﻿using xeban.Infrastructure;
 using xeban.Models;
+using xeban.Responses;
 
 namespace xeban.Services;
 
@@ -25,5 +26,22 @@ public class AccountService
     public int? RetrieveAccountBalance(int accountId)
     {
         return _accountRepository.RetrieveAccount(accountId)?.Balance;
+    }
+
+    public DepositEventResponse? HandleDeposit(int accountId, int initialBalance)
+    {
+        var acc = RetrieveAccount(accountId); 
+        
+        if (acc == null)
+            acc = CreateAccount(accountId, initialBalance);
+        else
+            _accountRepository.ModifyAccountBalance(accountId, initialBalance);
+
+        var eventResponse = new DepositEventResponse
+        {
+            Destination = acc
+        };
+        
+        return eventResponse;
     }
 }

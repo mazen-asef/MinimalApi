@@ -28,4 +28,15 @@ public class AccountRepository
 
         return acc;
     }
+
+    public bool ModifyAccountBalance(int accountId, int balanceModifier)
+    {
+        var acc = RetrieveAccount(accountId);
+
+        if (acc == null) 
+            return false;
+        
+        acc.Balance += balanceModifier;
+        return true;
+    }
 }
