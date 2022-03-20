@@ -1,3 +1,6 @@
+using xeban.Infrastructure;
+using xeban.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add DI
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountRepository>();
 
 var app = builder.Build();
 
