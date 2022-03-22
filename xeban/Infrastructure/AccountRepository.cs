@@ -39,4 +39,9 @@ public class AccountRepository
         acc.Balance += balanceModifier;
         return true;
     }
+
+    public void ResetData()
+    {
+        _accounts.Clear();
+    }
 }

@@ -82,4 +82,9 @@ public class AccountService
 
         return eventResponse;
     }
+
+    public void HandleReset()
+    {
+        _accountRepository.ResetData();
+    }
 }
