@@ -1,10 +1,6 @@
 using System.Net;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using xeban.Common;
-using xeban.Models;
-using xeban.Responses;
 using xeban.Services;
 
 namespace xeban.Controllers;
@@ -15,13 +11,11 @@ namespace xeban.Controllers;
 public class EventController : ControllerBase
 {
     private readonly ILogger<BalanceController> _logger;
-    private readonly IHttpContextAccessor _acessor;
     private readonly AccountService _accountService;
 
-    public EventController(ILogger<BalanceController> logger, AccountService accountService, IHttpContextAccessor httpContextAccessor)
+    public EventController(ILogger<BalanceController> logger, AccountService accountService)
     {
         _logger = logger;
-        _acessor = httpContextAccessor;
         _accountService = accountService;
     }
 
