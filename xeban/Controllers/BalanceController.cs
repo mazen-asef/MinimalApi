@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using xeban.Services;
 
@@ -21,9 +22,6 @@ public class BalanceController : ControllerBase
     {
         var balance = _accountService.RetrieveAccountBalance(accountId);
         
-        if (balance is null)
-            return NotFound(0);
-
-        return balance;
+        return balance is null ? StatusCode((int) HttpStatusCode.NotFound, 0) : StatusCode((int) HttpStatusCode.Created, balance);;
     }
 }

@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using xeban.Common;
 using xeban.Models;
 using xeban.Responses;
@@ -25,13 +26,21 @@ public class EventController : ControllerBase
     }
 
     [HttpPost(Name = "PostEvent")]
-    public ActionResult<DepositEventResponse> Post(string type, int destination, int amount)
+    public ActionResult Post(string type, int destination, int amount, int origin = 0)
     {
-        if (type != EventType.DEPOSIT_EVENT) 
-            return NotFound(0);
-        
-        var account = _accountService.HandleDeposit(destination, amount);
-        
-        return account is null ? NotFound(0) : Created(_acessor.HttpContext?.Request.GetDisplayUrl() ?? string.Empty, account);
+        switch (type)
+        {
+            case EventType.DEPOSIT_EVENT:
+                var depositEvent = _accountService.HandleDeposit(destination, amount);
+                return depositEvent is null ? StatusCode((int) HttpStatusCode.NotFound, 0) : StatusCode((int) HttpStatusCode.Created, depositEvent);;
+                break;
+            case EventType.WITHDRAW_EVENT:
+                var withdrawEvent = _accountService.HandleWithdrawal(destination, amount);
+                
+                return withdrawEvent is null ? StatusCode((int) HttpStatusCode.NotFound, 0) : StatusCode((int) HttpStatusCode.Created, withdrawEvent);;
+                break;
+        }
+
+        return StatusCode((int) HttpStatusCode.NotFound, 0);
     }
 }
