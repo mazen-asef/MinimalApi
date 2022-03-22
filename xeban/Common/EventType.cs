@@ -2,5 +2,7 @@
 
 public static class EventType
 {
-    public static string DEPOSIT_EVENT = "deposit";
+    public const string DEPOSIT_EVENT = "deposit";
+    public const string WITHDRAW_EVENT = "withdraw";
+    public const string TRANSFER_EVENT = "transfer";
 }

@@ -33,6 +33,10 @@ public class EventController : ControllerBase
                 
                 return withdrawEvent is null ? StatusCode((int) HttpStatusCode.NotFound, 0) : StatusCode((int) HttpStatusCode.Created, withdrawEvent);;
                 break;
+            case EventType.TRANSFER_EVENT:
+                var transferEvent = _accountService.HandleTransfer(origin, destination, amount);
+                
+                return transferEvent is null ? StatusCode((int) HttpStatusCode.NotFound, 0) : StatusCode((int) HttpStatusCode.Created, transferEvent);;
         }
 
         return StatusCode((int) HttpStatusCode.NotFound, 0);

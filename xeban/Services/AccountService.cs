@@ -28,7 +28,7 @@ public class AccountService
         return _accountRepository.RetrieveAccount(accountId)?.Balance;
     }
 
-    public DepositEventResponse? HandleDeposit(int accountId, int amount)
+    public DepositEventResponse HandleDeposit(int accountId, int amount)
     {
         var acc = RetrieveAccount(accountId); 
         
@@ -59,6 +59,27 @@ public class AccountService
             Origin = acc
         };
         
+        return eventResponse;
+    }
+
+    public TransferEventResponse? HandleTransfer(int origin, int destination, int amount)
+    {
+        // Special case that warrants a comment. We care about who we're taking money, but not
+        // caring to whom we're giving to. So just check the origin money to see if the deal is ON
+        var originAccount = RetrieveAccount(origin);
+
+        if (originAccount == null)
+            return null;
+        
+        HandleWithdrawal(originAccount.Id, amount);
+        var destinationAccount = HandleDeposit(destination, amount);
+
+        var eventResponse = new TransferEventResponse
+        {
+            Origin = originAccount,
+            Destination = destinationAccount.Destination
+        };
+
         return eventResponse;
     }
 }
